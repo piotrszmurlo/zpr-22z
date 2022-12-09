@@ -1307,7 +1307,7 @@ var asm = createWasm();
 var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__wasm_call_ctors");
 
 /** @type {function(...*):?} */
-var __Z13calculateBalliiiiiiii = Module["__Z13calculateBalliiiiiiii"] = createExportWrapper("_Z13calculateBalliiiiiiii");
+var __Z13calculateBalliiiiii = Module["__Z13calculateBalliiiiii"] = createExportWrapper("_Z13calculateBalliiiiii");
 
 /** @type {function(...*):?} */
 var ___errno_location = Module["___errno_location"] = createExportWrapper("__errno_location");

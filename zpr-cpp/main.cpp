@@ -6,7 +6,7 @@
   
   
 EMSCRIPTEN_KEEPALIVE 
-int* calculateBall(int bXPos, int bYPos, int  bXVel, int bYVel, int pLeftXPos, int pLeftYPos, int pRightXPos, int pRightYPos)
+int* calculateBall(int bXPos, int bYPos, int  bXVel, int bYVel,int pLeftYPos, int pRightYPos)
 {
   int sizeX = 1000;
   int sizeY = 800;
@@ -24,7 +24,7 @@ int* calculateBall(int bXPos, int bYPos, int  bXVel, int bYVel, int pLeftXPos, i
         }   
       }
 
-  else if (bXPos>=pRightXPos)
+  else if (bXPos>=sizeX-pWidth)
     {
       if(bYPos + bHeight > pLeftYPos-pHeight && bYPos - bHeight < pLeftYPos)
       {
