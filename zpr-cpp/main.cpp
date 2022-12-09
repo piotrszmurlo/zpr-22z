@@ -6,8 +6,12 @@
   
   
 EMSCRIPTEN_KEEPALIVE 
-int* calculateBall(int bXPos, int bYPos, int  bXVel, int bYVel,int pLeftYPos, int pRightYPos)
+int* calculateBall(int* ball,int pLeftYPos, int pRightYPos)
 {
+  int bXPos = ball[0]; 
+  int bYPos = ball[1]; 
+  int bXVel = ball[2];
+  int bYVel = ball[3];
   int sizeX = 1000;
   int sizeY = 800;
   int pWidth = 30;
@@ -40,10 +44,10 @@ int* calculateBall(int bXPos, int bYPos, int  bXVel, int bYVel,int pLeftYPos, in
 
   bXPos += bXVel;
   bYPos += bYVel;
-  int returnArray[4];
-  returnArray[0]=bXPos;
-  returnArray[1]=bYPos;
-  returnArray[2]=bXVel;
-  returnArray[3]=bYVel;
-  return returnArray;
+
+  ball[0]=bXPos;
+  ball[1]=bYPos;
+  ball[2]=bXVel;
+  ball[3]=bYVel;
+  return ball;
 }
