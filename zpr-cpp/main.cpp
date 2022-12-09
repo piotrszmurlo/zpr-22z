@@ -1,19 +1,19 @@
 #include <stdio.h>
-// #include <emscripten.h>
+#include <emscripten.h>
 
 
 
+  
+  
+EMSCRIPTEN_KEEPALIVE 
+int* calculateBall(int bXPos, int bYPos, int  bXVel, int bYVel, int pLeftXPos, int pLeftYPos, int pRightXPos, int pRightYPos)
+{
   int sizeX = 1000;
   int sizeY = 800;
   int pWidth = 30;
   int pHeight = 150;
   int bWidth = 15;
   int bHeight = 15;
-  
-
-EMSCRIPTEN_KEEPALIVE
-int* calculateBall(int bXPos, int bYPos, int  bXVel, int bYVel, int pLeftXPos, int pLeftYPos, int pRightXPos, int pRightYPos)
-{
   //did ball hit paddle
   if (bXPos - bWidth <=pWidth)
       {
