@@ -1,6 +1,6 @@
 public/engine.wasm: src/engine.mjs
-src/engine.mjs: src/engine.cpp
-	emcc --no-entry src/engine.cpp -o src/engine.mjs  \
+src/engine.mjs: src/engine/engine.cpp
+	emcc --no-entry src/engine/engine.cpp -o src/engine.mjs  \
 	  --pre-js src/locateFile.js  \
 	  -s ENVIRONMENT='web'  \
 	  -s EXPORT_NAME='createModule'  \

@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import './App.css';
-import createModule from "./test.mjs"
-import Pong from './Pong'
+import Pong from "./Pong";
 
 function App() {
-
   return (
     <div>
-      <Pong/>
+      <Pong />
     </div>
   );
 }
