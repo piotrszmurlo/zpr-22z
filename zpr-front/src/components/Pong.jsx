@@ -1,7 +1,7 @@
 import { Stack, Box } from "@mui/material";
-import { useState } from "react";
 import Board from "./Board";
 import Points from "./Points";
+
 function Pong(props) {
   return (
     <Box
@@ -15,7 +15,7 @@ function Pong(props) {
           player1Points={props.player1Points}
           player2Points={props.player2Points}
         />
-        <Board />
+        <Board ballX={props.ballX} ballY={props.ballY} />
       </Stack>
     </Box>
   );

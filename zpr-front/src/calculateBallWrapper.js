@@ -11,15 +11,15 @@ function calculateBallWrapper(Module) {
       ["number", "number", "number", "number"],
       [buffer, leftPaddleY, rightPaddleY, resultBuffer]
     );
-    const resultArray = [];
-    for (let i = 0; i < length; i++) {
-      resultArray.push(
-        Module.HEAP32[resultBuffer / Int32Array.BYTES_PER_ELEMENT + i]
-      );
-    }
+    const resultLabels = ["ballX", "ballY", "ballSpeedX", "ballSpeedY"];
+    const results = {};
+    resultLabels.forEach((label, i) => {
+      results[label] =
+        Module.HEAP32[resultBuffer / Int32Array.BYTES_PER_ELEMENT + i];
+    });
     Module._free(buffer);
     Module._free(resultBuffer);
-    return resultArray;
+    return results;
   };
 }
 
