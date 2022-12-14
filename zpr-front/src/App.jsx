@@ -31,7 +31,7 @@ function App() {
     ballY: INITIAL_BALL_Y,
   });
   const [ballSpeed, setBallSpeed] = useState({
-    ballSpeedX: getRandomBallSpeed(20),
+    ballSpeedX: -getRandomBallSpeed(20),
     ballSpeedY: getRandomBallSpeed(20),
   });
 
@@ -84,15 +84,33 @@ function App() {
         ballSpeed["ballSpeedX"],
         ballSpeed["ballSpeedY"],
       ],
-      50,
+      player1Y,
       50
     );
-    console.log(result);
-    setBallPosition({ ballX: result["ballX"], ballY: result["ballY"] });
-    setBallSpeed({
-      ballSpeedX: result["ballSpeedX"],
-      ballSpeedY: result["ballSpeedY"],
-    });
+    if(result["ballX"]<0)
+      {
+        setPlayer2Points(player2Points+1)
+        setBallPosition({
+          ballX: INITIAL_BALL_X,
+          ballY: INITIAL_BALL_Y,
+        })
+      }
+    else if (result["ballX"]>1000)
+    {
+      setPlayer1Points(player1Points+1)
+      setBallPosition({
+        ballX: INITIAL_BALL_X,
+        ballY: INITIAL_BALL_Y,
+      })
+    }
+    else {
+      console.log(result);
+      setBallPosition({ ballX: result["ballX"], ballY: result["ballY"] });
+      setBallSpeed({
+        ballSpeedX: result["ballSpeedX"],
+        ballSpeedY: result["ballSpeedY"],
+      });
+    }
   }
 
   const check = calculateBall([200, 400, 5, 5], 50, 50);

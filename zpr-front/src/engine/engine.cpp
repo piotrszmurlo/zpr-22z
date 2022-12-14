@@ -6,47 +6,52 @@
 extern "C" {
   
   EMSCRIPTEN_KEEPALIVE 
-  int* calculateBall(int* ball,int pLeftYPos, int pRightYPos, int* result)
+  int* calculateBall(int* ball,int pLeftYPosition, int pRightYPosition, int* result)
   {
-    int bXPos = ball[0]; 
-    int bYPos = ball[1]; 
-    int bXVel = ball[2];
-    int bYVel = ball[3];
     int sizeX = 1000;
     int sizeY = 800;
     int pWidth = 30;
     int pHeight = 150;
     int bWidth = 15;
     int bHeight = 15;
+    int pXPosition = 10;
+    if(std::end(ball)-std::begin(ball)!=4)
+      {
+        return result;
+      }
+    int bXPosition = ball[0]; 
+    int bYPosition = ball[1]; 
+    int bXVel = ball[2];
+    int bYVel = ball[3];
+    
     //did ball hit paddle
-    if (bXPos - bWidth <=pWidth)
+    if (bXPosition - bWidth <=pWidth + pXPosition)
         {
-          if(bYPos+bHeight > pLeftYPos-pHeight && bYPos-bHeight < pLeftYPos)
+          if(bYPosition+bHeight > pLeftYPosition-pHeight && bYPosition-bHeight < pLeftYPosition)
           {
             bXVel = bXVel * -1;
             bYVel = bYVel * -1;
           }   
         }
-
-    else if (bXPos>=sizeX-pWidth)
+    else if (bXPosition + bWidth>=sizeX - pWidth - pXPosition)
       {
-        if(bYPos + bHeight > pLeftYPos-pHeight && bYPos - bHeight < pLeftYPos)
+        if(bYPosition + bHeight > pLeftYPosition-pHeight && bYPosition - bHeight < pLeftYPosition)
         {
           bXVel = bXVel * -1;
           bYVel = bYVel * -1;
         }
       } 
     //did ball hit wall
-    else if(bYPos+bHeight>=sizeY || bYPos<=0)
+    else if(bYPosition+bHeight>=sizeY || bYPosition<=0)
       {
         bYVel=bYVel*-1; 
       }
 
-    bXPos += bXVel;
-    bYPos += bYVel;
+    bXPosition += bXVel;
+    bYPosition += bYVel;
 
-    result[0]=bXPos;
-    result[1]=bYPos;
+    result[0]=bXPosition;
+    result[1]=bYPosition;
     result[2]=bXVel;
     result[3]=bYVel;
     return result;
