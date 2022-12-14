@@ -4,7 +4,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import CircularProgress from "@mui/material/CircularProgress";
-import { Box, Stack } from "@mui/material";
+import { Box } from "@mui/material";
 
 function AlertDialog(props) {
   return (

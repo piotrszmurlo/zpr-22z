@@ -5,10 +5,10 @@ function Points(props) {
     <Box>
       <Stack direction="row" spacing={110}>
         <Typography variant="h1" gutterBottom>
-          {props.player1Points}
+          {props.score["player1"]}
         </Typography>
         <Typography variant="h1" gutterBottom>
-          {props.player2Points}
+          {props.score["player2"]}
         </Typography>
       </Stack>
     </Box>

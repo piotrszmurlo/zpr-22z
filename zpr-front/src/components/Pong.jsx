@@ -11,11 +11,13 @@ function Pong(props) {
       minHeight="100vh"
     >
       <Stack spacing={2} justifyContent="center">
-        <Points
-          player1Points={props.player1Points}
-          player2Points={props.player2Points}
+        <Points score={props.score} />
+        <Board
+          ballX={props.ballX}
+          ballY={props.ballY}
+          player1Y={props.player1Y}
+          player2Y={props.player2Y}
         />
-        <Board ballX={props.ballX} ballY={props.ballY} />
       </Stack>
     </Box>
   );
