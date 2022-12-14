@@ -1,5 +1,5 @@
+import time
 from flask import Flask
-from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
@@ -23,6 +23,8 @@ def handle_disconnect():
 def handle_message():
     print('ping EVENT happened...')
     emit('pong', {'data': 'Disconnected'})
+    # time.sleep(1)
+    # handle_message()
 
 
 if __name__ == '__main__':

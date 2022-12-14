@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Sketch from "react-p5";
+import { CANVAS_WIDTH, CANVAS_HEIGHT } from "../constants.js";
 
-function Board() {
-  const canvas_width = 1000;
-  const canvas_height = 800;
-
+function Board(props) {
   const setup = (p5, canvasParentRef) => {
-    p5.createCanvas(canvas_width, canvas_height).parent(canvasParentRef);
+    p5.createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT).parent(canvasParentRef);
   };
 
   const onArrowDown = () => {
     setPlayer1Y((y) => {
-      if (y + 150 > canvas_height) {
+      if (y + 150 > CANVAS_HEIGHT) {
         return y;
       } else {
         return y + 10;
@@ -44,8 +42,8 @@ function Board() {
     );
   }, []);
 
-  const [ballX, setBallX] = useState(canvas_width / 2);
-  const [ballY, setBallY] = useState(canvas_height / 2);
+  const [ballX, setBallX] = useState(CANVAS_WIDTH / 2);
+  const [ballY, setBallY] = useState(CANVAS_HEIGHT / 2);
 
   const player1X = 10;
   const player2X = 960;
