@@ -11,7 +11,7 @@ socketio = SocketIO(app, cors_allowed_origins=['http://localhost:3000', 'http://
 @socketio.on('connect')
 def test_connect():
     print('CONNECT EVENT happened...')
-    # emit('success', {'data': 'Connected'})
+    emit('success', {'data': 'Connected'})
 
 
 @socketio.on('disconnect')

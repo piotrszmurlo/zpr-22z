@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  client:
+    build:
+      context: zpr-front
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    stdin_open: true
+  server:
+    build:
+      context: zpr-backend
+      dockerfile: Dockerfile
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_ENV: development
+      FLASK_APP: app.py
+    ports:
+      - "5000:5000"
+    entrypoint:
+      - flask
+      - run
+      - --host=0.0.0.0

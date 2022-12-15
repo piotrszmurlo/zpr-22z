@@ -1,7 +1,9 @@
 # zpr-22z
 
-npm install react-scripts --save
-npm install --save react react-dom @types/react @types/react-dom
-npm install socket.io
-npm install socket.io-client
-npm i --save react-p5
+To start the app:
+
+$ cd zpr-22z
+
+$ docker compose up
+
+To close the app, ctrl+c or docker compose down

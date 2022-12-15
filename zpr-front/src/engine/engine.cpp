@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <iterator>
 #include <emscripten.h>
 
 
@@ -16,10 +17,10 @@ extern "C" {
     int bHeight = 15;
     int pXPosition = 10;
 
-    if(std::end(ball)-std::begin(ball)!=4)
-      {
-        return result;
-      }
+    // if(std::end(ball)-std::begin(ball)!=4)
+    //   {
+    //     return result;
+    //   }
     
     int bXPosition = ball[0]; 
     int bYPosition = ball[1]; 
