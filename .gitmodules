@@ -1,3 +1,0 @@
-[submodule "zpr-front/emsdk"]
-	path = zpr-front/emsdk
-	url = https://github.com/emscripten-core/emsdk.git
