@@ -2,8 +2,10 @@
 
 To start the app:
 
-$ cd zpr-22z
+```$ cd zpr-22z```
 
-$ docker compose up
+```$ docker compose up```
 
-To close the app, ctrl+c or docker compose down
+To close the app:
+
+```$docker compose down```
