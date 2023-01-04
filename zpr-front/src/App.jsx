@@ -21,7 +21,6 @@ const socket = io(SERVER_ADDRESS);
 function App() {
   const [calculateBall, setCalculateBall] = useState();
   const [isConnected, setIsConnected] = useState(socket.connected);
-  const [lastPong, setLastPong] = useState(null);
   const [score, setScore] = useState({ player1: 0, player2: 0 });
 
   const [ballPosition, setBallPosition] = useState({
@@ -37,7 +36,6 @@ function App() {
   const [player2Y, setPlayer2Y] = useState(10);
 
   const onArrowDownHandler = () => {
-    socket.emit("ping");
     setPlayer1Y((y) => {
       if (y + PADDLE_HEIGHT > CANVAS_HEIGHT) {
         return y;
@@ -47,8 +45,11 @@ function App() {
     });
   };
 
+  const startGame = () => {
+    socket.emit("start");
+  };
+
   const onArrowUpHandler = () => {
-    socket.emit("ping");
     setPlayer1Y((y) => {
       if (y <= 0) {
         return y;
@@ -59,6 +60,9 @@ function App() {
   };
 
   useEffect(() => {
+    const onSpacebarHandler = () => {
+      startGame();
+    };
     window.addEventListener(
       "keydown",
       (event) => {
@@ -67,6 +71,9 @@ function App() {
         }
         if (event.code === "ArrowDown") {
           onArrowDownHandler();
+        }
+        if (event.code === "Space") {
+          onSpacebarHandler();
         }
       },
       false
@@ -133,10 +140,6 @@ function App() {
       setIsConnected(false);
     });
 
-    socket.on("pong", () => {
-      setLastPong(new Date().toISOString());
-    });
-
     socket.on("tick", () => {
       step();
     });
@@ -160,25 +163,17 @@ function App() {
     );
   }
 
-  const sendPing = () => {
-    socket.emit("ping");
-  };
-
-  const startGame = () => {
-    socket.emit("start");
-  };
-
   const stopGame = () => {
     socket.emit("stop");
   };
 
   return (
     <div className="App">
-      {/* <AlertDialog
+      <AlertDialog
         open={!isConnected}
         dialogText={CONNECTION_ERROR_TEXT}
         description={TRYING_TO_RECONNECT_TEXT}
-      /> */}
+      />
 
       <Pong
         score={score}
@@ -187,11 +182,6 @@ function App() {
         player1Y={player1Y}
         player2Y={player2Y}
       />
-      <button onClick={startGame}>Start</button>
-      <button onClick={stopGame}>Stop</button>
-      <p>Connected: {"" + isConnected}</p>
-      <p>Last pong: {lastPong || "-"}</p>
-      <button onClick={sendPing}>Send ping</button>
     </div>
   );
 }
