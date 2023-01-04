@@ -49,8 +49,10 @@ function App() {
   };
 
   const startGame = () => {
-    socket.emit("start");
-    setIsGameStarted(true);
+    if (isConnected) {
+      socket.emit("start");
+      setIsGameStarted(true);
+    }
   };
 
   const onArrowUpHandler = () => {
@@ -82,7 +84,7 @@ function App() {
       },
       false
     );
-  }, []);
+  }, [startGame]);
 
   useEffect(() => {
     createModule().then((Module) => {
@@ -142,6 +144,7 @@ function App() {
     socket.on("disconnect", () => {
       console.log("Disconnected");
       setIsConnected(false);
+      stopGame();
     });
 
     socket.on("tick", () => {
@@ -151,7 +154,6 @@ function App() {
     return () => {
       socket.off("connect");
       socket.off("disconnect");
-      socket.off("pong");
       socket.off("tick");
       socket.off("reset_ball_response");
     };

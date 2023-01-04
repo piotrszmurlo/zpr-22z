@@ -22,12 +22,6 @@ def handle_disconnect():
     game_started = False
 
 
-@server.on('ping')
-def handle_message():
-    print('ping EVENT happened...')
-    emit('pong', {'data': 'pong'})
-
-
 @server.on('reset_ball')
 def reset_ball():
     x_speed, y_speed = random_ball_speed()
@@ -35,7 +29,6 @@ def reset_ball():
         'x_speed': x_speed,
         'y_speed': y_speed
     })
-    print(f'ball reset. x_speed: {x_speed}, y_speed: {y_speed}')
 
 
 @server.on('start')
@@ -57,7 +50,6 @@ def stop_game():
 
 def game_loop():
     while game_started:
-        print('TICK')
         emit('tick')
         time.sleep(0.05)
 
