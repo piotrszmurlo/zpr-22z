@@ -44,23 +44,25 @@ function App() {
   };
 
   const onArrowDownHandler = () => {
-    setPlayer1Y((y) => {
-      if (y + PADDLE_HEIGHT > CANVAS_HEIGHT) {
-        return y;
-      } else {
-        return y + 10;
-      }
-    });
+    socket.emit("arrow_down");
+    // setPlayer1Y((y) => {
+    //   if (y + PADDLE_HEIGHT > CANVAS_HEIGHT) {
+    //     return y;
+    //   } else {
+    //     return y + 10;
+    //   }
+    // });
   };
 
   const onArrowUpHandler = () => {
-    setPlayer1Y((y) => {
-      if (y <= 0) {
-        return y;
-      } else {
-        return y - 10;
-      }
-    });
+    socket.emit("arrow_up");
+    // setPlayer1Y((y) => {
+    //   if (y <= 0) {
+    //     return y;
+    //   } else {
+    //     return y - 10;
+    //   }
+    // });
   };
 
   useEffect(() => {
@@ -108,12 +110,12 @@ function App() {
       setPlayerNumber(data["player"]);
     });
 
-    socket.on("game_started", (data) => {
+    socket.on("game_started", () => {
       console.log("GOT GAME START");
       setIsGameStarted(true);
     });
 
-    socket.on("game_stopped", (data) => {
+    socket.on("game_stopped", () => {
       console.log("GOT GAME STOP");
       setIsGameStarted(false);
     });
@@ -164,6 +166,11 @@ function App() {
       step();
     });
 
+    socket.on("paddle_response", (data) => {
+      setPlayer1Y(data["player1"]);
+      setPlayer2Y(data["player2"]);
+    });
+
     return () => {
       socket.off("connect");
       socket.off("disconnect");
@@ -172,6 +179,7 @@ function App() {
       socket.off("player_assignment");
       socket.off("game_stopped");
       socket.off("game_started");
+      socket.off("paddle_response");
     };
   }, [ballPosition, ballSpeed, calculateBall, player1Y, player2Y]);
 
