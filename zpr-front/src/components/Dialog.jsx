@@ -29,7 +29,9 @@ function AlertDialog(props) {
               width: 200,
             }}
           >
-            <CircularProgress style={{ margin: "0 auto" }} />
+            {props.circularProgress && (
+              <CircularProgress style={{ margin: "0 auto" }} />
+            )}
           </Box>
         </DialogContent>
       </Dialog>

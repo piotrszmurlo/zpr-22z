@@ -14,11 +14,14 @@ import {
   CANVAS_WIDTH,
   PADDLE_HEIGHT,
   CANVAS_HEIGHT,
+  GAME_STOPPED_TEXT,
+  GAME_STOPPED_TEXT_SECONDARY,
 } from "./constants.js";
 
 const socket = io(SERVER_ADDRESS);
 
 function App() {
+  const [isGameStarted, setIsGameStarted] = useState(false);
   const [calculateBall, setCalculateBall] = useState();
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [score, setScore] = useState({ player1: 0, player2: 0 });
@@ -47,6 +50,7 @@ function App() {
 
   const startGame = () => {
     socket.emit("start");
+    setIsGameStarted(true);
   };
 
   const onArrowUpHandler = () => {
@@ -165,6 +169,7 @@ function App() {
 
   const stopGame = () => {
     socket.emit("stop");
+    setIsGameStarted(false);
   };
 
   return (
@@ -173,6 +178,13 @@ function App() {
         open={!isConnected}
         dialogText={CONNECTION_ERROR_TEXT}
         description={TRYING_TO_RECONNECT_TEXT}
+        circularProgress={true}
+      />
+      <AlertDialog
+        open={isConnected && !isGameStarted}
+        dialogText={GAME_STOPPED_TEXT}
+        description={GAME_STOPPED_TEXT_SECONDARY}
+        circularProgress={false}
       />
 
       <Pong
