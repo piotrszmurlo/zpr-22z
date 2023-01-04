@@ -7,6 +7,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 server = SocketIO(app, cors_allowed_origins=['http://localhost:3000', 'http://127.0.0.1:3000'], engineio_logger=True)
 
+game_started = False
+
+
 @server.on('connect')
 def test_connect():
     print('CONNECT EVENT happened...')
@@ -22,8 +25,28 @@ def handle_disconnect():
 def handle_message():
     print('ping EVENT happened...')
     emit('pong', {'data': 'pong'})
-    # time.sleep(1)
-    # handle_message()
+
+
+@server.on('start')
+def start_game():
+    global game_started
+    game_started = True
+    print("Game started")
+    game_loop()
+
+
+@server.on('stop')
+def stop_game():
+    global game_started
+    game_started = False
+    print("Game stopped")
+
+
+def game_loop():
+    while game_started:
+        print('TICK')
+        emit('tick')
+        time.sleep(0.2)
 
 
 if __name__ == '__main__':

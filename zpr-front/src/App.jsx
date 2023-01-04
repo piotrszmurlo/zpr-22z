@@ -84,6 +84,44 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const resetBall = () => {
+      setBallPosition({
+        ballX: INITIAL_BALL_X,
+        ballY: INITIAL_BALL_Y,
+      });
+      setBallSpeed({
+        ballSpeedX: -getRandomBallSpeed(50),
+        ballSpeedY: getRandomBallSpeed(30),
+      });
+    };
+
+    function step() {
+      const result = calculateBall(
+        [
+          ballPosition["ballX"],
+          ballPosition["ballY"],
+          ballSpeed["ballSpeedX"],
+          ballSpeed["ballSpeedY"],
+        ],
+        player1Y,
+        player2Y
+      );
+      if (result["ballX"] < 0) {
+        setScore((score) => ({ ...score, player2: score["player2"] + 1 }));
+        resetBall();
+      } else if (result["ballX"] > CANVAS_WIDTH) {
+        setScore((score) => ({ ...score, player1: score["player1"] + 1 }));
+        resetBall();
+      } else {
+        console.log(result);
+        setBallPosition({ ballX: result["ballX"], ballY: result["ballY"] });
+        setBallSpeed({
+          ballSpeedX: result["ballSpeedX"],
+          ballSpeedY: result["ballSpeedY"],
+        });
+      }
+    }
+
     socket.on("connect", () => {
       console.log("Connected");
       setIsConnected(true);
@@ -98,12 +136,18 @@ function App() {
       setLastPong(new Date().toISOString());
     });
 
+    socket.on("tick", () => {
+      step();
+      console.log("TICK HAPPENED");
+    });
+
     return () => {
       socket.off("connect");
       socket.off("disconnect");
       socket.off("pong");
+      socket.off("tick");
     };
-  }, []);
+  }, [ballPosition, ballSpeed, calculateBall, player1Y, player2Y]);
 
   if (!calculateBall) {
     return (
@@ -119,44 +163,52 @@ function App() {
     socket.emit("ping");
   };
 
-  //te random to nie moze byc po stronie klienta
-  const resetBall = () => {
-    setBallPosition({
-      ballX: INITIAL_BALL_X,
-      ballY: INITIAL_BALL_Y,
-    });
-    setBallSpeed({
-      ballSpeedX: -getRandomBallSpeed(50),
-      ballSpeedY: getRandomBallSpeed(30),
-    });
+  const startGame = () => {
+    socket.emit("start");
   };
 
-  function step() {
-    const result = calculateBall(
-      [
-        ballPosition["ballX"],
-        ballPosition["ballY"],
-        ballSpeed["ballSpeedX"],
-        ballSpeed["ballSpeedY"],
-      ],
-      player1Y,
-      player2Y
-    );
-    if (result["ballX"] < 0) {
-      setScore((score) => ({ ...score, player2: score["player2"] + 1 }));
-      resetBall();
-    } else if (result["ballX"] > CANVAS_WIDTH) {
-      setScore((score) => ({ ...score, player1: score["player1"] + 1 }));
-      resetBall();
-    } else {
-      console.log(result);
-      setBallPosition({ ballX: result["ballX"], ballY: result["ballY"] });
-      setBallSpeed({
-        ballSpeedX: result["ballSpeedX"],
-        ballSpeedY: result["ballSpeedY"],
-      });
-    }
-  }
+  const stopGame = () => {
+    socket.emit("stop");
+  };
+
+  //te random to nie moze byc po stronie klienta
+  // const resetBall = () => {
+  //   setBallPosition({
+  //     ballX: INITIAL_BALL_X,
+  //     ballY: INITIAL_BALL_Y,
+  //   });
+  //   setBallSpeed({
+  //     ballSpeedX: -getRandomBallSpeed(50),
+  //     ballSpeedY: getRandomBallSpeed(30),
+  //   });
+  // };
+
+  // function step() {
+  //   const result = calculateBall(
+  //     [
+  //       ballPosition["ballX"],
+  //       ballPosition["ballY"],
+  //       ballSpeed["ballSpeedX"],
+  //       ballSpeed["ballSpeedY"],
+  //     ],
+  //     player1Y,
+  //     player2Y
+  //   );
+  //   if (result["ballX"] < 0) {
+  //     setScore((score) => ({ ...score, player2: score["player2"] + 1 }));
+  //     resetBall();
+  //   } else if (result["ballX"] > CANVAS_WIDTH) {
+  //     setScore((score) => ({ ...score, player1: score["player1"] + 1 }));
+  //     resetBall();
+  //   } else {
+  //     console.log(result);
+  //     setBallPosition({ ballX: result["ballX"], ballY: result["ballY"] });
+  //     setBallSpeed({
+  //       ballSpeedX: result["ballSpeedX"],
+  //       ballSpeedY: result["ballSpeedY"],
+  //     });
+  //   }
+  // }
 
   return (
     <div className="App">
@@ -173,7 +225,9 @@ function App() {
         player1Y={player1Y}
         player2Y={player2Y}
       />
-      <button onClick={step}>Step</button>
+      <button onClick={startGame}>Start</button>
+      <button onClick={stopGame}>Stop</button>
+      {/* <button onClick={step}>Step</button> */}
       <p>Connected: {"" + isConnected}</p>
       <p>Last pong: {lastPong || "-"}</p>
       <button onClick={sendPing}>Send ping</button>
