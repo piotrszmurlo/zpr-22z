@@ -25,6 +25,7 @@ function App() {
   const [calculateBall, setCalculateBall] = useState();
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [score, setScore] = useState({ player1: 0, player2: 0 });
+  const [playerNumber, setPlayerNumber] = useState();
 
   const [ballPosition, setBallPosition] = useState({
     ballX: INITIAL_BALL_X,
@@ -37,6 +38,10 @@ function App() {
 
   const [player1Y, setPlayer1Y] = useState(10);
   const [player2Y, setPlayer2Y] = useState(10);
+
+  const stopGame = () => {
+    socket.emit("stop");
+  };
 
   const onArrowDownHandler = () => {
     setPlayer1Y((y) => {
@@ -62,7 +67,6 @@ function App() {
     const onSpacebarHandler = () => {
       if (isConnected) {
         socket.emit("start");
-        setIsGameStarted(true);
       }
     };
     window.addEventListener(
@@ -100,9 +104,22 @@ function App() {
       });
     });
 
+    socket.on("player_assignment", (data) => {
+      setPlayerNumber(data["player"]);
+    });
+
+    socket.on("game_started", (data) => {
+      console.log("GOT GAME START");
+      setIsGameStarted(true);
+    });
+
+    socket.on("game_stopped", (data) => {
+      console.log("GOT GAME STOP");
+      setIsGameStarted(false);
+    });
+
     const resetBall = () => {
       socket.emit("reset_ball");
-      stopGame();
     };
 
     function step() {
@@ -152,6 +169,9 @@ function App() {
       socket.off("disconnect");
       socket.off("tick");
       socket.off("reset_ball_response");
+      socket.off("player_assignment");
+      socket.off("game_stopped");
+      socket.off("game_started");
     };
   }, [ballPosition, ballSpeed, calculateBall, player1Y, player2Y]);
 
@@ -165,11 +185,6 @@ function App() {
     );
   }
 
-  const stopGame = () => {
-    socket.emit("stop");
-    // setIsGameStarted(false);
-  };
-
   return (
     <div className="App">
       <AlertDialog
@@ -178,12 +193,12 @@ function App() {
         description={TRYING_TO_RECONNECT_TEXT}
         circularProgress={true}
       />
-      {/* <AlertDialog
+      <AlertDialog
         open={isConnected && !isGameStarted}
         dialogText={GAME_STOPPED_TEXT}
         description={GAME_STOPPED_TEXT_SECONDARY}
         circularProgress={false}
-      /> */}
+      />
 
       <Pong
         score={score}

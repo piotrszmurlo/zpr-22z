@@ -14,7 +14,8 @@ def handle_connect():
     for player in state.players:
         if state.players[player] is None:
             state.players[player] = request.sid
-            print(f'Player {player} connected')
+            print(f'{player} connected')
+            emit('player_assignment', {'player': player})
             break
 
 
@@ -23,24 +24,26 @@ def handle_disconnect():
     for player in state.players:
         if state.players[player] == request.sid:
             state.players[player] = None
-            print(f'Player {player} disconnected')
+            print(f'{player} disconnected')
             break
     state.stop_game()
 
 
 @server.on('reset_ball')
 def reset_ball():
+    stop_game()
     x_speed, y_speed = random_ball_speed()
     emit('reset_ball_response', {
         'x_speed': x_speed,
         'y_speed': y_speed
-    })
+    }, broadcast=True)
 
 
 @server.on('start')
 def start_game():
     if state.is_game_started:
         return
+    emit('game_started', broadcast=True)
     state.start_game()
     print("Game started")
     game_loop()
@@ -48,13 +51,14 @@ def start_game():
 
 @server.on('stop')
 def stop_game():
+    emit('game_stopped', broadcast=True)
     state.stop_game()
     print("Game stopped")
 
 
 def game_loop():
     while state.is_game_started:
-        emit('tick')
+        emit('tick', broadcast=True)
         time.sleep(0.05)
 
 
