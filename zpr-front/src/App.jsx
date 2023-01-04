@@ -19,10 +19,6 @@ import {
 const socket = io(SERVER_ADDRESS);
 
 function App() {
-  const getRandomBallSpeed = (max) => {
-    return Math.floor(Math.random() * (max - 1)) + 1;
-  };
-
   const [calculateBall, setCalculateBall] = useState();
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastPong, setLastPong] = useState(null);
@@ -33,8 +29,8 @@ function App() {
     ballY: INITIAL_BALL_Y,
   });
   const [ballSpeed, setBallSpeed] = useState({
-    ballSpeedX: -getRandomBallSpeed(100),
-    ballSpeedY: getRandomBallSpeed(30),
+    ballSpeedX: 0,
+    ballSpeedY: 0,
   });
 
   const [player1Y, setPlayer1Y] = useState(10);
@@ -84,15 +80,20 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const resetBall = () => {
+    socket.on("reset_ball_response", (data) => {
       setBallPosition({
         ballX: INITIAL_BALL_X,
         ballY: INITIAL_BALL_Y,
       });
       setBallSpeed({
-        ballSpeedX: -getRandomBallSpeed(50),
-        ballSpeedY: getRandomBallSpeed(30),
+        ballSpeedX: data["x_speed"],
+        ballSpeedY: data["y_speed"],
       });
+    });
+
+    const resetBall = () => {
+      socket.emit("reset_ball");
+      stopGame();
     };
 
     function step() {
@@ -113,7 +114,6 @@ function App() {
         setScore((score) => ({ ...score, player1: score["player1"] + 1 }));
         resetBall();
       } else {
-        console.log(result);
         setBallPosition({ ballX: result["ballX"], ballY: result["ballY"] });
         setBallSpeed({
           ballSpeedX: result["ballSpeedX"],
@@ -125,6 +125,7 @@ function App() {
     socket.on("connect", () => {
       console.log("Connected");
       setIsConnected(true);
+      resetBall();
     });
 
     socket.on("disconnect", () => {
@@ -138,7 +139,6 @@ function App() {
 
     socket.on("tick", () => {
       step();
-      console.log("TICK HAPPENED");
     });
 
     return () => {
@@ -146,6 +146,7 @@ function App() {
       socket.off("disconnect");
       socket.off("pong");
       socket.off("tick");
+      socket.off("reset_ball_response");
     };
   }, [ballPosition, ballSpeed, calculateBall, player1Y, player2Y]);
 
@@ -171,45 +172,6 @@ function App() {
     socket.emit("stop");
   };
 
-  //te random to nie moze byc po stronie klienta
-  // const resetBall = () => {
-  //   setBallPosition({
-  //     ballX: INITIAL_BALL_X,
-  //     ballY: INITIAL_BALL_Y,
-  //   });
-  //   setBallSpeed({
-  //     ballSpeedX: -getRandomBallSpeed(50),
-  //     ballSpeedY: getRandomBallSpeed(30),
-  //   });
-  // };
-
-  // function step() {
-  //   const result = calculateBall(
-  //     [
-  //       ballPosition["ballX"],
-  //       ballPosition["ballY"],
-  //       ballSpeed["ballSpeedX"],
-  //       ballSpeed["ballSpeedY"],
-  //     ],
-  //     player1Y,
-  //     player2Y
-  //   );
-  //   if (result["ballX"] < 0) {
-  //     setScore((score) => ({ ...score, player2: score["player2"] + 1 }));
-  //     resetBall();
-  //   } else if (result["ballX"] > CANVAS_WIDTH) {
-  //     setScore((score) => ({ ...score, player1: score["player1"] + 1 }));
-  //     resetBall();
-  //   } else {
-  //     console.log(result);
-  //     setBallPosition({ ballX: result["ballX"], ballY: result["ballY"] });
-  //     setBallSpeed({
-  //       ballSpeedX: result["ballSpeedX"],
-  //       ballSpeedY: result["ballSpeedY"],
-  //     });
-  //   }
-  // }
-
   return (
     <div className="App">
       {/* <AlertDialog
@@ -227,7 +189,6 @@ function App() {
       />
       <button onClick={startGame}>Start</button>
       <button onClick={stopGame}>Stop</button>
-      {/* <button onClick={step}>Step</button> */}
       <p>Connected: {"" + isConnected}</p>
       <p>Last pong: {lastPong || "-"}</p>
       <button onClick={sendPing}>Send ping</button>

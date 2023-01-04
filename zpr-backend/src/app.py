@@ -1,7 +1,7 @@
 import time
 from flask import Flask
 from flask_socketio import SocketIO, emit
-
+from src.utils import random_ball_speed
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'secret!'
@@ -13,12 +13,13 @@ game_started = False
 @server.on('connect')
 def test_connect():
     print('CONNECT EVENT happened...')
-    # emit('success', {'data': 'Connected'})
 
 
 @server.on('disconnect')
 def handle_disconnect():
+    global game_started
     print('DISCONNECT EVENT happened...')
+    game_started = False
 
 
 @server.on('ping')
@@ -27,9 +28,21 @@ def handle_message():
     emit('pong', {'data': 'pong'})
 
 
+@server.on('reset_ball')
+def reset_ball():
+    x_speed, y_speed = random_ball_speed()
+    emit('reset_ball_response', {
+        'x_speed': x_speed,
+        'y_speed': y_speed
+    })
+    print(f'ball reset. x_speed: {x_speed}, y_speed: {y_speed}')
+
+
 @server.on('start')
 def start_game():
     global game_started
+    if game_started:
+        return
     game_started = True
     print("Game started")
     game_loop()
@@ -46,7 +59,7 @@ def game_loop():
     while game_started:
         print('TICK')
         emit('tick')
-        time.sleep(0.2)
+        time.sleep(0.05)
 
 
 if __name__ == '__main__':
