@@ -48,13 +48,6 @@ function App() {
     });
   };
 
-  const startGame = () => {
-    if (isConnected) {
-      socket.emit("start");
-      setIsGameStarted(true);
-    }
-  };
-
   const onArrowUpHandler = () => {
     setPlayer1Y((y) => {
       if (y <= 0) {
@@ -67,7 +60,10 @@ function App() {
 
   useEffect(() => {
     const onSpacebarHandler = () => {
-      startGame();
+      if (isConnected) {
+        socket.emit("start");
+        setIsGameStarted(true);
+      }
     };
     window.addEventListener(
       "keydown",
@@ -84,7 +80,7 @@ function App() {
       },
       false
     );
-  }, [startGame]);
+  }, [isConnected]);
 
   useEffect(() => {
     createModule().then((Module) => {
@@ -171,7 +167,7 @@ function App() {
 
   const stopGame = () => {
     socket.emit("stop");
-    setIsGameStarted(false);
+    // setIsGameStarted(false);
   };
 
   return (
@@ -182,12 +178,12 @@ function App() {
         description={TRYING_TO_RECONNECT_TEXT}
         circularProgress={true}
       />
-      <AlertDialog
+      {/* <AlertDialog
         open={isConnected && !isGameStarted}
         dialogText={GAME_STOPPED_TEXT}
         description={GAME_STOPPED_TEXT_SECONDARY}
         circularProgress={false}
-      />
+      /> */}
 
       <Pong
         score={score}
