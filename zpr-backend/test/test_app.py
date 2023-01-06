@@ -1,8 +1,8 @@
-from src import app, server
+from src import app, socketio
 
 flask_test_client = app.test_client()
 
-socketio_test_client = server.test_client(app, flask_test_client=flask_test_client)
+socketio_test_client = socketio.test_client(app, flask_test_client=flask_test_client)
 
 
 def test_connection():

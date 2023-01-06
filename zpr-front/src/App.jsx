@@ -26,6 +26,10 @@ function App() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [score, setScore] = useState({ player1: 0, player2: 0 });
   const [playerNumber, setPlayerNumber] = useState();
+  const [movement, setMovement] = useState({
+    isMoving: false,
+    direction: "none",
+  });
 
   const [ballPosition, setBallPosition] = useState({
     ballX: INITIAL_BALL_X,
@@ -36,57 +40,76 @@ function App() {
     ballSpeedY: 0,
   });
 
-  const [player1Y, setPlayer1Y] = useState(10);
-  const [player2Y, setPlayer2Y] = useState(10);
+  const [paddleY, setPaddleY] = useState({
+    player1: 50,
+    player2: 10,
+  });
 
   const stopGame = () => {
     socket.emit("stop");
   };
 
-  const onArrowDownHandler = () => {
-    socket.emit("arrow_down");
-    // setPlayer1Y((y) => {
-    //   if (y + PADDLE_HEIGHT > CANVAS_HEIGHT) {
-    //     return y;
-    //   } else {
-    //     return y + 10;
-    //   }
-    // });
-  };
-
-  const onArrowUpHandler = () => {
-    socket.emit("arrow_up");
-    // setPlayer1Y((y) => {
-    //   if (y <= 0) {
-    //     return y;
-    //   } else {
-    //     return y - 10;
-    //   }
-    // });
-  };
-
   useEffect(() => {
     const onSpacebarHandler = () => {
-      if (isConnected) {
+      if (isConnected && !isGameStarted) {
         socket.emit("start");
       }
     };
-    window.addEventListener(
-      "keydown",
-      (event) => {
-        if (event.code === "ArrowUp") {
-          onArrowUpHandler();
+
+    const handleKeyDown = (event) => {
+      if (event.code === "ArrowUp") {
+        if (paddleY[playerNumber] > 0) {
+          setMovement({
+            isMoving: true,
+            direction: "up",
+          });
+        } else {
+          setMovement({
+            isMoving: false,
+            direction: "none",
+          });
         }
-        if (event.code === "ArrowDown") {
-          onArrowDownHandler();
+      }
+      if (event.code === "ArrowDown") {
+        if (paddleY[playerNumber] + PADDLE_HEIGHT <= CANVAS_HEIGHT) {
+          setMovement({
+            isMoving: true,
+            direction: "down",
+          });
+        } else {
+          setMovement({
+            isMoving: false,
+            direction: "none",
+          });
         }
-        if (event.code === "Space") {
-          onSpacebarHandler();
-        }
-      },
-      false
-    );
-  }, [isConnected]);
+      }
+    };
+
+    const handleKeyUp = (event) => {
+      if (event.code === "ArrowUp") {
+        setMovement({
+          isMoving: false,
+          direction: "none",
+        });
+      }
+      if (event.code === "ArrowDown") {
+        setMovement({
+          isMoving: false,
+          direction: "none",
+        });
+      }
+      if (event.code === "Space") {
+        onSpacebarHandler();
+      }
+    };
+
+    window.addEventListener("keydown", (event) => handleKeyDown(event), false);
+    window.addEventListener("keyup", (event) => handleKeyUp(event), false);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown, false);
+      window.removeEventListener("keyup", handleKeyUp, false);
+    };
+  }, [isConnected, isGameStarted, paddleY, playerNumber]);
 
   useEffect(() => {
     createModule().then((Module) => {
@@ -111,12 +134,10 @@ function App() {
     });
 
     socket.on("game_started", () => {
-      console.log("GOT GAME START");
       setIsGameStarted(true);
     });
 
     socket.on("game_stopped", () => {
-      console.log("GOT GAME STOP");
       setIsGameStarted(false);
     });
 
@@ -132,8 +153,8 @@ function App() {
           ballSpeed["ballSpeedX"],
           ballSpeed["ballSpeedY"],
         ],
-        player1Y,
-        player2Y
+        paddleY["player1"],
+        paddleY["player2"]
       );
       if (result["ballX"] < 0) {
         setScore((score) => ({ ...score, player2: score["player2"] + 1 }));
@@ -163,12 +184,14 @@ function App() {
     });
 
     socket.on("tick", () => {
+      if (movement["isMoving"]) {
+        socket.emit("move_paddle", { direction: movement["direction"] });
+      }
       step();
     });
 
-    socket.on("paddle_response", (data) => {
-      setPlayer1Y(data["player1"]);
-      setPlayer2Y(data["player2"]);
+    socket.on("paddle_response", (newPaddleY) => {
+      setPaddleY(newPaddleY);
     });
 
     return () => {
@@ -181,7 +204,7 @@ function App() {
       socket.off("game_started");
       socket.off("paddle_response");
     };
-  }, [ballPosition, ballSpeed, calculateBall, player1Y, player2Y]);
+  }, [ballPosition, ballSpeed, calculateBall, paddleY, movement]);
 
   if (!calculateBall) {
     return (
@@ -212,8 +235,8 @@ function App() {
         score={score}
         ballX={ballPosition["ballX"]}
         ballY={ballPosition["ballY"]}
-        player1Y={player1Y}
-        player2Y={player2Y}
+        player1Y={paddleY["player1"]}
+        player2Y={paddleY["player2"]}
       />
     </div>
   );
