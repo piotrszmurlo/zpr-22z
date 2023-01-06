@@ -2,15 +2,16 @@ import time
 
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
-from src.utils import random_ball_speed, GameState, PADDLE_SPEED
+from flask_cors import CORS
+from utils import random_ball_speed, GameState, PADDLE_SPEED
 from engineio.payload import Payload
-
+import eventlet
 Payload.max_decode_packets = 200
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins=['http://localhost:3000', 'http://127.0.0.1:3000'], engineio_logger=False)
-
+socketio = SocketIO(cors_allowed_origins=['http://localhost:3000', 'http://127.0.0.1:3000'], engineio_logger=True, logger=True)
+eventlet.monkey_patch()
 state = GameState()
 
 
@@ -91,5 +92,6 @@ def game_loop():
 
 
 if __name__ == '__main__':
+
     socketio.init_app(app)
     socketio.run(app)

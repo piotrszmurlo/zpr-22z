@@ -18,7 +18,7 @@ import {
   GAME_STOPPED_TEXT_SECONDARY,
 } from "./constants.js";
 
-const socket = io(SERVER_ADDRESS);
+const socket = io(SERVER_ADDRESS, { transports: ["websocket", "polling"] });
 
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
