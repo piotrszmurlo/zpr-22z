@@ -1,6 +1,6 @@
 # zpr-22z
 
-Requirements: docker compose, make
+Requirements: docker compose, make, pipenv
 
 To start the app:
 
@@ -21,3 +21,5 @@ To run backend tests (make sure you have the requirements.txt installed):
 `$ cd zpr-22z/zpr-backend`
 
 `$ pytest`
+
+flake8
