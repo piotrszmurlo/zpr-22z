@@ -1,6 +1,7 @@
 from random import randint, random
 from collections import OrderedDict
-from .constants import MAX_BALL_SPEED_X, MAX_BALL_SPEED_Y, MIN_BALL_SPEED_Y, MIN_BALL_SPEED_X
+from .constants import \
+    MAX_BALL_SPEED_X, MAX_BALL_SPEED_Y, MIN_BALL_SPEED_Y, MIN_BALL_SPEED_X
 
 
 class GameState:
@@ -23,5 +24,3 @@ def random_ball_speed():
     if random() < 0.5:
         y_speed = -y_speed
     return x_speed, y_speed
-
-

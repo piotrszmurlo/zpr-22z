@@ -2,7 +2,6 @@ import time
 
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
-from flask_cors import CORS
 from utils import random_ball_speed, GameState, PADDLE_SPEED
 from engineio.payload import Payload
 import eventlet
@@ -10,7 +9,11 @@ Payload.max_decode_packets = 200
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(cors_allowed_origins=['http://localhost:3000', 'http://127.0.0.1:3000'], engineio_logger=True, logger=True)
+socketio = SocketIO(
+    cors_allowed_origins=['http://localhost:3000', 'http://127.0.0.1:3000'],
+    engineio_logger=True,
+    logger=True
+)
 eventlet.monkey_patch()
 state = GameState()
 
@@ -23,7 +26,6 @@ def handle_connect():
                 'sid': request.sid,
                 'paddle_y': 10
             }
-            print(f'{player} connected')
             emit('player_assignment', {'player': player})
             break
 
@@ -31,9 +33,9 @@ def handle_connect():
 @socketio.on('disconnect')
 def handle_disconnect():
     for player in state.players:
-        if state.players[player] is not None and state.players[player]['sid'] == request.sid:
+        if state.players[player] is not None\
+                and state.players[player]['sid'] == request.sid:
             state.players[player] = None
-            print(f'{player} disconnected')
             state.stop_game()
             break
 
@@ -44,7 +46,6 @@ def start_game():
         return
     emit('game_started', broadcast=True)
     state.start_game()
-    print("Game started")
     game_loop()
 
 
@@ -52,7 +53,6 @@ def start_game():
 def stop_game():
     emit('game_stopped', broadcast=True)
     state.stop_game()
-    print("Game stopped")
 
 
 @socketio.on('reset_ball')
@@ -67,7 +67,6 @@ def reset_ball():
 
 @socketio.on('move_paddle')
 def move_paddle(data):
-    print("MOVE PADDLE")
     if not state.is_game_started:
         return
     for player in state.players:
@@ -92,6 +91,5 @@ def game_loop():
 
 
 if __name__ == '__main__':
-
     socketio.init_app(app)
     socketio.run(app)
