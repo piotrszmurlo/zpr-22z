@@ -28,9 +28,9 @@ extern "C" {
     int bYVelocity = ball[3];
     
     //did ball hit paddle
-    if (bXPosition - bWidth <= pWidth + pXPosition)
-        {
-          if(bYPosition+bHeight > pLeftYPosition-pHeight && bYPosition-bHeight < pLeftYPosition)
+    if ((bXPosition - bWidth <= pWidth + pXPosition)
+      {
+        if(bYPosition + bHeight > pLeftYPosition - pHeight && bYPosition - bHeight < pLeftYPosition)
           {
             bXVelocity = bXVelocity * -1;
             bYVelocity = bYVelocity * -1;
@@ -38,7 +38,7 @@ extern "C" {
         }
     else if (bXPosition + bWidth >= sizeX - pWidth - pXPosition)
       {
-        if(bYPosition + bHeight > pLeftYPosition-pHeight && bYPosition - bHeight < pLeftYPosition)
+        if(bYPosition + bHeight > pRightYPosition - pHeight && bYPosition - bHeight < pRightYPosition)
         {
           bXVelocity = bXVelocity * -1;
           bYVelocity = bYVelocity * -1;
