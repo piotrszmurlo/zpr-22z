@@ -1,5 +1,5 @@
-// export const SERVER_ADDRESS = "http://127.0.0.1:5000/";
-export const SERVER_ADDRESS = "http://server:5000/";
+export const SERVER_ADDRESS = "http://127.0.0.1:5000/";
+// export const SERVER_ADDRESS = "http://server:5000/";
 export const CONNECTION_ERROR_TEXT = "Connection lost.";
 export const TRYING_TO_RECONNECT_TEXT = "Trying to reconnect...";
 export const WASM_LOADING_TEXT = "Loading webassembly...";

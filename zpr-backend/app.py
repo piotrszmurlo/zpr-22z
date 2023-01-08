@@ -92,4 +92,4 @@ def game_loop():
 
 if __name__ == '__main__':
     socketio.init_app(app)
-    socketio.run(app, host='server', port=5000)
+    socketio.run(app)
