@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import Sketch from "react-p5";
 import {
   CANVAS_WIDTH,

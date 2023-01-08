@@ -1,4 +1,5 @@
-from src import app, socketio
+from src import socketio
+import app
 
 flask_test_client = app.test_client()
 
