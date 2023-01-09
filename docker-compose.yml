@@ -6,7 +6,7 @@ services:
       context: zpr-front
       dockerfile: Dockerfile
     ports:
-      - "3333:3000"
+      - "3000:3000"
     stdin_open: true
     env_file: .env
   server:
