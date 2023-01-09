@@ -20,7 +20,7 @@
     "web-vitals": "^2.1.4",
     "husky": "^0.14.3",
     "lint-staged": "^4.0.4",
-    "prettier": "^1.6.1",
+    "prettier": "^1.6.1"
   },
   "scripts": {
     "precommit": "lint-staged",
@@ -49,8 +49,9 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ],
-    "lint-staged": {
+    ]
+  },
+  "lint-staged": {  
     "src/**/*.js": [
       "prettier --print-width 100 --single-quote --trailing-comma es5 --write",
       "git add"

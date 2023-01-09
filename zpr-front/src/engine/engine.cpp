@@ -24,39 +24,37 @@ extern "C" {
     
     int bXPosition = ball[0]; 
     int bYPosition = ball[1]; 
-    int bXVelocity = ball[2];
-    int bYVelocity = ball[3];
+    int bXSpeed = ball[2];
+    int bYSpeed = ball[3];
     
     //did ball hit paddle
     if (bXPosition - bWidth <= pWidth + pXPosition)
       {
-        if(bYPosition + bHeight > pLeftYPosition - pHeight && bYPosition - bHeight < pLeftYPosition)
+        if((bYPosition + bHeight > pLeftYPosition) && (bYPosition - bHeight < pLeftYPosition - pHeight))
           {
-            bXVelocity = bXVelocity * -1;
-            bYVelocity = bYVelocity * -1;
+            bXSpeed = bXSpeed * -1;;
           }   
         }
     else if (bXPosition + bWidth >= sizeX - pWidth - pXPosition)
       {
-        if(bYPosition + bHeight > pRightYPosition - pHeight && bYPosition - bHeight < pRightYPosition)
+        if((bYPosition + bHeight > pRightYPosition) && (bYPosition - bHeight < pRightYPosition - pHeight))
         {
-          bXVelocity = bXVelocity * -1;
-          bYVelocity = bYVelocity * -1;
+          bXSpeed = bXSpeed * -1;
         }
       } 
     //did ball hit wall
-    else if((bYPosition+bHeight)>=sizeY || (bYPosition-bHeight)<=0)
+	if((bYPosition+bHeight)>=sizeY || (bYPosition-bHeight)<=0)
       {
-        bYVelocity=bYVelocity*-1; 
+        bYSpeed=bYSpeed*-1; 
       }
     
-    bXPosition += bXVelocity;
-    bYPosition += bYVelocity;
+    bXPosition += bXSpeed;
+    bYPosition += bYSpeed;
 
     result[0]=bXPosition;
     result[1]=bYPosition;
-    result[2]=bXVelocity;
-    result[3]=bYVelocity;
+    result[2]=bXSpeed;
+    result[3]=bYSpeed;
     return result;
   }
 }
