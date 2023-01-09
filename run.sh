@@ -6,4 +6,4 @@ cd zpr-front/emsdk
 cd .. 
 make
 cd ..
-docker compose up
+docker compose up 
