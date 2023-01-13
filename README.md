@@ -1,5 +1,7 @@
 # zpr-22z
 
+Use up and down arrows to move your paddle
+
 Requirements: python w/ pipenv
 
 To start the server:
@@ -8,9 +10,13 @@ To start the server:
 
 `$ python3 -m pipenv run`
 
-Access the app at `http://localhost:3000/` using two browser tabs
+To start the client:
 
-Use up and down arrows to move your paddle
+`$ cd zpr-22z/zpr-frontend`
+
+`$ npm start`
+
+Access the app at `http://localhost:3000/` using two browser tabs
 
 To run backend tests:
 
