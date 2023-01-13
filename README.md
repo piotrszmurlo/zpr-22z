@@ -8,13 +8,9 @@ To start the server:
 
 `$ python3 -m pipenv run`
 
-Access the app at `http://localhost:3000/`
+Access the app at `http://localhost:3000/` using two browser tabs
 
-Try tapping `Step` and `send Ping` buttons
-
-`send Ping` - sends ping to flask-socketio server and saves response's timestamp
-
-`Step` - steps the ball simulation (calculated by WASM function)
+Use up and down arrows to move your paddle
 
 To run backend tests:
 
