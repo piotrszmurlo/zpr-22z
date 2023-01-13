@@ -30,14 +30,14 @@ extern "C" {
     //did ball hit paddle
     if (bXPosition - bWidth <= pWidth + pXPosition)
       {
-        if((bYPosition + bHeight > pLeftYPosition) && (bYPosition - bHeight < pLeftYPosition - pHeight))
+        if((bYPosition + bHeight > pLeftYPosition) && (bYPosition - bHeight < pLeftYPosition + pHeight))
           {
             bXSpeed = bXSpeed * -1;;
           }   
         }
     else if (bXPosition + bWidth >= sizeX - pWidth - pXPosition)
       {
-        if((bYPosition + bHeight > pRightYPosition) && (bYPosition - bHeight < pRightYPosition - pHeight))
+        if((bYPosition + bHeight > pRightYPosition) && (bYPosition - bHeight < pRightYPosition + pHeight))
         {
           bXSpeed = bXSpeed * -1;
         }
