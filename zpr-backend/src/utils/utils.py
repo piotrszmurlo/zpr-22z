@@ -8,6 +8,7 @@ class GameState:
     def __init__(self):
         self.is_game_started = False
         self.players = OrderedDict(player1=None, player2=None)
+        self.test_mode = False  # used only in tests
 
     def start_game(self):
         self.is_game_started = True
