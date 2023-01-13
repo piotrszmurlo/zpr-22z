@@ -18,3 +18,5 @@ python_version = "3.10"
 
 [scripts]
 app = "python app.py"
+linter = "flake8 src"
+test = "pytest test"

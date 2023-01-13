@@ -1,12 +1,12 @@
 # zpr-22z
 
-Requirements: docker compose, make, pipenv
+Requirements: python w/ pipenv
 
-To start the app:
+To start the server:
 
-`$ cd zpr-22z`
+`$ cd zpr-22z/zpr-backend`
 
-`$ ./run.sh`
+`$ python3 -m pipenv run`
 
 Access the app at `http://localhost:3000/`
 
@@ -16,10 +16,12 @@ Try tapping `Step` and `send Ping` buttons
 
 `Step` - steps the ball simulation (calculated by WASM function)
 
-To run backend tests (make sure you have the requirements.txt installed):
+To run backend tests:
 
 `$ cd zpr-22z/zpr-backend`
 
-`$ pytest`
+`$ python3 -m pipenv test`
 
-flake8
+To run backend linter:
+
+`$ python3 -m pipenv linter` (no output == no linter errors)

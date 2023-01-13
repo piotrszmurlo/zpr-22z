@@ -16,18 +16,12 @@ extern "C" {
     int bWidth = 15;
     int bHeight = 15;
     int pXPosition = 10;
-
-    // if(std::end(ball)-std::begin(ball)!=4)
-    //   {
-    //     return result;
-    //   }
-    
     int bXPosition = ball[0]; 
     int bYPosition = ball[1]; 
     int bXSpeed = ball[2];
     int bYSpeed = ball[3];
     
-    //did ball hit paddle
+    // did ball hit paddle
     if (bXPosition - bWidth <= pWidth + pXPosition)
       {
         if((bYPosition + bHeight > pLeftYPosition) && (bYPosition - bHeight < pLeftYPosition + pHeight))
@@ -42,7 +36,7 @@ extern "C" {
           bXSpeed = bXSpeed * -1;
         }
       } 
-    //did ball hit wall
+    // did ball hit wall
 	if((bYPosition+bHeight)>=sizeY || (bYPosition-bHeight)<=0)
       {
         bYSpeed=bYSpeed*-1; 
