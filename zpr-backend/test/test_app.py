@@ -75,3 +75,10 @@ def test_start_already_started_game():
     assert test_client.get_received() == []
 
 
+def test_move_paddle_if_game_is_not_started():
+    test_client = socketio.test_client(flask_app)
+    state.is_game_started = False
+    test_client.emit('move_paddle', {'direction': 'up'})
+    assert test_client.get_received() == []
+
+
