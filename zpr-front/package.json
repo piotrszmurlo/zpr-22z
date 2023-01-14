@@ -24,14 +24,15 @@
   },
   "scripts": {
     "precommit": "lint-staged",
+    "lint": "eslint  --fix src/**/*.js",
+    "format": "prettier src/**/*.js --write. --config ./.prettierrc",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "ignorePatterns": [
-      "src/test.mjs",
       "src/engine.mjs"
     ],
     "extends": [
