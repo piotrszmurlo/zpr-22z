@@ -10,11 +10,17 @@ To start the server:
 
 `$ cd zpr-22z/zpr-backend`
 
+Install the dependencies:
+
+`$ python3 -m pipenv sync` (Windows: `$ python -m pipenv sync`)
+
 `$ python3 -m pipenv run app` (Windows: `$ python -m pipenv run app`)
 
 To start the client:
 
 `$ cd zpr-22z/zpr-frontend`
+
+Install the dependencies:
 
 `$ npm install`
 
