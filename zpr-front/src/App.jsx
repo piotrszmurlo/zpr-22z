@@ -45,10 +45,6 @@ function App() {
     player2: 10
   })
 
-  const stopGame = () => {
-    socket.emit('stop')
-  }
-
   useEffect(() => {
     const onSpacebarHandler = () => {
       if (isConnected && !isGameStarted) {
@@ -175,7 +171,6 @@ function App() {
     socket.on('disconnect', () => {
       console.log('Disconnected')
       setIsConnected(false)
-      stopGame()
     })
 
     socket.on('tick', () => {

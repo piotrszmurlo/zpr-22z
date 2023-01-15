@@ -5,10 +5,18 @@
 
 
 extern "C" {
+  EMSCRIPTEN_KEEPALIVE 
+    /**
+     * function used to calculate ball position in the next step
+     * @param ball - current ball state [xPosition, yPosition, xSpeed, ySpeed] (int array[4])
+     * @param pLeftYPosition - left paddle y coordinate
+     * @param result - blank result buffer pointer (int array[4])
+     * @return next ball state result buffer pointer [xPosition, yPosition, xSpeed, ySpeed] (int array[4])
+     */
+  int* calculateBall(int* ball,int pLeftYPosition,
+   int pRightYPosition, int* result)
+  {
 
-  EMSCRIPTEN_KEEPALIVE
-  int* calculateBall(int* ball, int pLeftYPosition,
-    int pRightYPosition, int* result) {
     int sizeX = 1000;
     int sizeY = 800;
     int pWidth = 30;
