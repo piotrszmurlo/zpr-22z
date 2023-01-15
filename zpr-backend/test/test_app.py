@@ -1,6 +1,5 @@
 from collections import OrderedDict
-from app import app as flask_app, socketio, state
-
+from src.app import app as flask_app, socketio, state
 socketio.init_app(flask_app)
 flask_test_client = flask_app.test_client()
 

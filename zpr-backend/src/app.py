@@ -1,9 +1,9 @@
-import threading
 import time
 
-from flask import Flask, request, session
+from flask import Flask, request
 from flask_socketio import SocketIO, emit
-from src.utils import random_ball_speed, GameState, PADDLE_SPEED, STARTING_PADDLE_Y
+from .utils import random_ball_speed, GameState
+from .constants import PADDLE_SPEED, STARTING_PADDLE_Y
 from engineio.payload import Payload
 import eventlet
 
