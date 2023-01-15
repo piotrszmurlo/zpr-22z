@@ -32,7 +32,7 @@ To run backend tests:
 
 `$ cd zpr-22z/zpr-backend`
 
-`$ python3 -m pipenv run test` (Windows: `$ python -m pipenv run test`)  
+`$ python3 -m pipenv run test` (Windows: `$ python -m pipenv run test`)
 
 To run backend linter:
 
@@ -54,9 +54,8 @@ To run frontend formatter:
 
 `$npm run formatter` - formatter also is being used automatically when using git commit
 
-To run cpp linter:
+To run cpp linter (requires installing python package cpplint):
 
 `$cd zpr-22z/zpr-fronted/src/engine`
 
 `$cpplint engine.cpp`
-
