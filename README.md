@@ -1,8 +1,10 @@
 # zpr-22z
 
+Press space to start the game when two players are connected.
+
 Use up and down arrows to move your paddle
 
-Requirements: python w/ pipenv
+Requirements: python w/ pipenv, Node.js + npm
 
 To start the server:
 
@@ -13,6 +15,8 @@ To start the server:
 To start the client:
 
 `$ cd zpr-22z/zpr-frontend`
+
+`$ npm install`
 
 `$ npm start`
 
@@ -26,10 +30,12 @@ To run backend tests:
 
 To run backend linter:
 
-`$ python3 -m pipenv linter` (no output == no linter errors)  
+`$ python3 -m pipenv linter` (no output == no linter errors)
 
-To run frontend linter:  
-`$ npm run lint`  
+To run frontend linter:
 
-To run frontend formatter:  
-`$npm run formatter` - formatter also is being used while commiting 
+`$ npm run lint`
+
+To run frontend formatter:
+
+`$npm run formatter` - formatter also is being used automatically when using git commit
