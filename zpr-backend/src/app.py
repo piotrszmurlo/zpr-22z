@@ -1,9 +1,10 @@
-import threading
-import time
+# This module defines callback logic and config for the server app
 
-from flask import Flask, request, session
+import time
+from flask import Flask, request
 from flask_socketio import SocketIO, emit
-from src.utils import random_ball_speed, GameState, PADDLE_SPEED, STARTING_PADDLE_Y
+from .utils import random_ball_speed, GameState
+from .constants import PADDLE_SPEED, STARTING_PADDLE_Y, CLIENT_SERVER_ADDRESS
 from engineio.payload import Payload
 import eventlet
 
@@ -12,7 +13,7 @@ Payload.max_decode_packets = 500
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(
-    cors_allowed_origins=['http://localhost:3000', 'http://127.0.0.1:3000'],
+    cors_allowed_origins=[CLIENT_SERVER_ADDRESS],
     engineio_logger=True,
     logger=True
 )
@@ -39,12 +40,13 @@ def handle_disconnect():
                 and state.players[player]['sid'] == request.sid:
             state.players[player] = None
             break
-    state.stop_game()
+    stop_game()
 
 
 @socketio.on('start')
 def start_game():
-    if state.is_game_started:
+    if state.is_game_started or state.players['player1']\
+            is None or state.players['player2'] is None:
         return
     emit('game_started', broadcast=True)
     state.start_game()
@@ -92,8 +94,3 @@ def game_loop():
         if state.test_mode:
             break
         time.sleep(0.1)
-
-
-if __name__ == '__main__':
-    socketio.init_app(app)
-    socketio.run(app)

@@ -17,6 +17,6 @@ flask-socketio = "*"
 python_version = "3.10"
 
 [scripts]
-app = "python app.py"
+app = "python3 main.py"
 linter = "flake8 src"
-test = "pytest test"
+test = "python3 -m pytest test"

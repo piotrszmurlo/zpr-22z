@@ -5,10 +5,14 @@ from .constants import \
 
 
 class GameState:
+    """Defines server-side only game state"""
     def __init__(self):
         self.is_game_started = False
+        """bool set if game is ongoing"""
         self.players = OrderedDict(player1=None, player2=None)
-        self.test_mode = False  # used only in tests
+        """OrderedDict containing connected player session id and paddle position"""
+        self.test_mode = False
+        """bool set only in testing, avoids endless game loop"""
 
     def start_game(self):
         self.is_game_started = True
@@ -18,6 +22,7 @@ class GameState:
 
 
 def random_ball_speed():
+    """Returns random ball speed from range [MIN_BALL_SPEED_X, MAX_BALL_SPEED_X]"""
     x_speed = randint(MIN_BALL_SPEED_X, MAX_BALL_SPEED_X)
     y_speed = randint(MIN_BALL_SPEED_Y, MAX_BALL_SPEED_Y)
     if random() < 0.5:
