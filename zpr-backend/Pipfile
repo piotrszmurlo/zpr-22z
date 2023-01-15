@@ -10,6 +10,7 @@ flake8 = "*"
 flask-cors = "*"
 eventlet = "*"
 flask-socketio = "*"
+cpplint = "*"
 
 [dev-packages]
 
