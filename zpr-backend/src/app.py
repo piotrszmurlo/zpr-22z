@@ -1,10 +1,10 @@
-# This module defines callback logic for the server app
+# This module defines callback logic and config for the server app
 
 import time
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
 from .utils import random_ball_speed, GameState
-from .constants import PADDLE_SPEED, STARTING_PADDLE_Y
+from .constants import PADDLE_SPEED, STARTING_PADDLE_Y, CLIENT_SERVER_ADDRESS
 from engineio.payload import Payload
 import eventlet
 
@@ -13,7 +13,7 @@ Payload.max_decode_packets = 500
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(
-    cors_allowed_origins=['http://localhost:3000', 'http://127.0.0.1:3000'],
+    cors_allowed_origins=[CLIENT_SERVER_ADDRESS],
     engineio_logger=True,
     logger=True
 )
