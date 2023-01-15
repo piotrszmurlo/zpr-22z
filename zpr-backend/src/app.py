@@ -94,8 +94,3 @@ def game_loop():
         if state.test_mode:
             break
         time.sleep(0.1)
-
-
-if __name__ == '__main__':
-    socketio.init_app(app)
-    socketio.run(app)
