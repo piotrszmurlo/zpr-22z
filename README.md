@@ -26,10 +26,10 @@ To run backend tests:
 
 To run backend linter:
 
-`$ python3 -m pipenv linter` (no output == no linter errors)
+`$ python3 -m pipenv linter` (no output == no linter errors)  
 
-To run frontend linter:
-`$ npm run lint`
+To run frontend linter:  
+`$ npm run lint`  
 
-To run frontend formatter:
+To run frontend formatter:  
 `$npm run formatter` - formatter also is being used while commiting 
