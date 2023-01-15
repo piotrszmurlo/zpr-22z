@@ -1,5 +1,6 @@
-import time
+# This module defines callback logic for the server app
 
+import time
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
 from .utils import random_ball_speed, GameState
@@ -39,12 +40,13 @@ def handle_disconnect():
                 and state.players[player]['sid'] == request.sid:
             state.players[player] = None
             break
-    state.stop_game()
+    stop_game()
 
 
 @socketio.on('start')
 def start_game():
-    if state.is_game_started:
+    if state.is_game_started or state.players['player1']\
+            is None or state.players['player2'] is None:
         return
     emit('game_started', broadcast=True)
     state.start_game()
