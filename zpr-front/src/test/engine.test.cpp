@@ -54,8 +54,8 @@ TEST_CASE("Ball hitting right paddle", "RightPaddle"){
   REQUIRE(results[i]==expectedResults[i]);
   }
   
-  ballCoordinates[0] = 245;
-  expectedResults[0] = 255;
+  ballCoordinates[1] = 245;
+  expectedResults[1] = 255;
   calculateBall(ballCoordinates, leftPaddleY, rightPaddleY, results);
   for(int i =0; i<4; i++)
   {
@@ -63,8 +63,8 @@ TEST_CASE("Ball hitting right paddle", "RightPaddle"){
   }
 
 
-  ballCoordinates[0] = 320;
-  expectedResults[0] = 320;
+  ballCoordinates[1] = 320;
+  expectedResults[1] = 320;
   calculateBall(ballCoordinates, leftPaddleY, rightPaddleY, results);
   for(int i =0; i<4; i++)
   {
@@ -85,8 +85,8 @@ TEST_CASE("Ball hitting left paddle", "LeftPaddle"){
   REQUIRE(results[i]==expectedResults[i]);
   }
   
-  ballCoordinates[0] = 245;
-  expectedResults[0] = 255;
+  ballCoordinates[1] = 245;
+  expectedResults[1] = 255;
   calculateBall(ballCoordinates, leftPaddleY, rightPaddleY, results);
   for(int i =0; i<4; i++)
   {
