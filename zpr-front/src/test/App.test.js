@@ -1,36 +1,26 @@
-import { render, screen } from '@testing-library/react'
-import App from '../App.jsx'
+import createModule from "../engine.mjs";
 
-// describe('renders learn react link', () => {
-//   render(<App />);
-//   const linkElement = screen.getByText(/learn react/i);
-//   expect(linkElement).toBeInTheDocument();
-// });
-describe('Ball moving', () => {
-  const [ballPosition, setBallPosition] = useState({
-    ballX: 500,
-    ballY: 170
-  })
-  const [ballSpeed, setBallSpeed] = useState({
-    ballSpeedX: 10,
-    ballSpeedY: 10
-  })
+const ballCoordinates = new Int32Array([170, 170, 10, 10])
+const leftPaddleY = 170
+const rightPaddleY = 320
 
-  const [paddleY, setPaddleY] = useState({
-    player1: 170,
-    player2: 170
-  })
+let Module = {}
 
-  const result = calculateBall(
-    [ballPosition['ballX'], ballPosition['ballY'], ballSpeed['ballSpeedX'], ballSpeed['ballSpeedY']],
-    paddleY['player1'],
-    paddleY['player2']
-  )
-  const expectedResult = {
-    ballX: 510,
-    ballY: 180,
-    ballSpeedX: 10,
-    ballSpeedY: 10
-  }
-  expect(result).toEqual(expectedResult)
+createModule().then((mod) => {
+  Module = mod
+  const ballArr = new Int32Array(ballCoordinates)
+  const length = ballArr.length
+  const buffer = Module._malloc(length * ballArr.BYTES_PER_ELEMENT)
+  const resultBuffer = Module._malloc(length * ballArr.BYTES_PER_ELEMENT)
+  Module.HEAP32.set(ballArr, buffer >> 2)
+  Module.ccall('calculateBall', 'number', ['number', 'number', 'number', 'number'], [buffer, leftPaddleY, rightPaddleY, resultBuffer])
+  const resultLabels = ['ballX', 'ballY', 'ballSpeedX', 'ballSpeedY']
+  const results = {}
+  resultLabels.forEach((label, i) => {
+    results[label] = Module.HEAP32[resultBuffer / Int32Array.BYTES_PER_ELEMENT + i]
+  })
+  console.log(results)
+  Module._free(buffer)
+  Module._free(resultBuffer)
 })
+
