@@ -4,6 +4,16 @@ import Board from './Board'
 import Points from './Points'
 import PropTypes from 'prop-types'
 
+/**
+ * Utility component aggregating and positioning Points and Board components
+ * @param props.score: coordinate y of player1's paddle
+ * in format {'player1': NUM_POINTS, 'player2': NUM_POINTS}
+ * @param props.player1Y: coordinate y of player1's paddle
+ * @param props.player2Y: coordinate y of player2's paddle
+ * @param props.ballX: coordinate x of the ball
+ * @param props.ballY: coordinate y of the ball
+ * @returns react component
+ */
 function Pong(props) {
   return (
     <Box display='flex' justifyContent='center' alignItems='center' minHeight='100vh'>

@@ -1,3 +1,7 @@
+/**
+ * Wrapper for the wasm function that calculates next ball state.
+ * Parameters documented in engine.cpp
+ */
 function calculateBallWrapper(Module) {
   return function (ballCoordinates, leftPaddleY, rightPaddleY) {
     const ballArr = new Int32Array(ballCoordinates)

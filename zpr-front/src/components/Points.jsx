@@ -2,6 +2,12 @@ import React from 'react'
 import { Box, Typography, Stack } from '@mui/material'
 import PropTypes from 'prop-types'
 
+/**
+ * Points component shows players' score based on props.score
+ * @param props.score: coordinate y of player1's paddle
+ * in format {'player1': NUM_POINTS, 'player2': NUM_POINTS}
+ * @returns react component
+ */
 function Points(props) {
   return (
     <Box>

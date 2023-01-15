@@ -3,6 +3,14 @@ import Sketch from 'react-p5'
 import { CANVAS_WIDTH, CANVAS_HEIGHT, PLAYER1_X, PLAYER2_X, PADDLE_WIDTH, PADDLE_HEIGHT, BALL_RADIUS } from '../constants.js'
 import PropTypes from 'prop-types'
 
+/**
+ * Draws a board component based on the props
+ * @param props.player1Y: coordinate y of player1's paddle
+ * @param props.player2Y: coordinate y of player2's paddle
+ * @param props.ballX: coordinate x of the ball
+ * @param props.ballY: coordinate y of the ball
+ * @returns react component
+ */
 function Board(props) {
   const setup = (p5, canvasParentRef) => {
     p5.createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT).parent(canvasParentRef)

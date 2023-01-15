@@ -3,7 +3,7 @@ import createModule from './engine.mjs'
 import calculateBallWrapper from './calculateBallWrapper.js'
 import io from 'socket.io-client'
 import Pong from './components/Pong'
-import AlertDialog from './components/Dialog.jsx'
+import AlertDialog from './components/AlertDialog.jsx'
 import {
   CONNECTION_ERROR_TEXT,
   TRYING_TO_RECONNECT_TEXT,
@@ -20,6 +20,9 @@ import {
 
 const socket = io(SERVER_ADDRESS, { transports: ['websocket', 'polling'] })
 
+/**
+ * Root component containing the pong webapp game
+ *  */
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false)
   const [calculateBall, setCalculateBall] = useState()
@@ -141,6 +144,9 @@ function App() {
       socket.emit('reset_ball')
     }
 
+    /**
+     * Function that performs step in the ball physics simulation
+     */
     function step() {
       const result = calculateBall(
         [ballPosition['ballX'], ballPosition['ballY'], ballSpeed['ballSpeedX'], ballSpeed['ballSpeedY']],

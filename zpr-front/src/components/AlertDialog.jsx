@@ -7,6 +7,14 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { Box } from '@mui/material'
 import PropTypes from 'prop-types'
 
+/**
+ * AlertDialog component used to notify user with important information
+ * @param props.open: bool indicating whether to show the dialog
+ * @param props.dialogText: string of dialog main text
+ * @param props.description: string of dialog secondary text
+ * @param props.circularProgress: bool indicating whether to show circular progress
+ * @returns react component
+ */
 function AlertDialog(props) {
   return (
     <Box>
