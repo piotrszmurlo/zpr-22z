@@ -29,3 +29,4 @@ yarn-error.log\*
 # generated
 
 \*.mjs
+src/engine.mjs
